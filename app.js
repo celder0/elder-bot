@@ -64,3 +64,9 @@ bot.on('interactionCreate', async interaction => {
 
 //Token needed in config.json
 bot.login(token);
+
+const express = require('express');
+const app = express();
+app.listen(process.env.PORT, () => {
+    console.log("App Listening")
+});
