@@ -1,4 +1,4 @@
-require('newrelic');
+const newrelic = require('newrelic');
 const { prefix } = require("./config.json");
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
@@ -34,7 +34,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 
             console.log('Successfully reloaded application (/) commands.');
         } catch (error) {
-            console.error(error);
+            newrelic.noticeError(error);
         }
     })
 })();
@@ -57,7 +57,7 @@ bot.on('interactionCreate', async interaction => {
         const command = require(`./commands/${interaction.commandName}`);
         await command.commandHandler(bot, interaction);
     } catch (error) {
-        console.error(error);
+        newrelic.noticeError(error);
         interaction.reply("Something weird happened and this command failed!");
     }
 });
