@@ -1,3 +1,4 @@
+require('newrelic');
 const { prefix } = require("./config.json");
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
