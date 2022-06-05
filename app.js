@@ -57,8 +57,17 @@ bot.on('interactionCreate', async interaction => {
         const command = require(`./commands/${interaction.commandName}`);
         await command.commandHandler(bot, interaction);
     } catch (error) {
+        console.error(error);
         newrelic.noticeError(error);
-        interaction.reply("Something weird happened and this command failed!");
+        interaction.reply({content: "Something weird happened and this command failed!", ephemeral: true});
+    }
+});
+
+bot.on('interactionCreate', interaction => {
+	if (!interaction.isSelectMenu()) return;
+    if(interaction.customId === 'joinThread') {
+        const thread = interaction.channel.threads.cache.get(interaction.values[0]);
+        thread.members.add(interaction.user.id);
     }
 });
 
