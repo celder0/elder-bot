@@ -63,7 +63,7 @@ bot.on('interactionCreate', async interaction => {
     }
 });
 
-bot.on('interactionCreate', interaction => {
+bot.on('interactionCreate', async interaction => {
 	if (!interaction.isSelectMenu()) return;
     if(interaction.customId === 'joinThread') {
         const thread = interaction.channel.threads.cache.get(interaction.values[0]);
