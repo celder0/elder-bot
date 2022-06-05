@@ -68,7 +68,7 @@ bot.on('interactionCreate', async interaction => {
     if(interaction.customId === 'joinThread') {
         const thread = interaction.channel.threads.cache.get(interaction.values[0]);
         thread.members.add(interaction.user.id);
-        await interaction.editReply(`${thread.name} joined!`);
+        await interaction.reply(`${thread.name} joined!`);
     }
 });
 
