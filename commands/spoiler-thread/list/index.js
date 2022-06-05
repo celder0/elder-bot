@@ -11,16 +11,17 @@ function data(subcommand) {
 async function commandHandler(bot, interaction) {
     if(interaction.options.getSubcommand() === COMMAND_NAME) {
         const channel = bot.channels.cache.get(interaction.channelId);
-        const activeThreads = (await channel.threads.fetchActive()).threads;
-        const threads = [];
-        for(const thread of activeThreads) {
-            const members = await thread.members.fetch();
-            if(members.has(bot.user.id) && !members.has(interaction.user.id)) {
-                threads.push(thread);
-            }
-        }
+        const activeThreads = await channel.threads.fetchActive();
         
-        if(threads.size > 0) {
+        const memberRequests = activeThreads.threads.map(activeThread => activeThread.members.fetch());
+
+        const memberResponses = await Promise.all(memberRequests);
+
+        const threads = memberResponses
+        .filter(memberResponses => memberResponses.has(bot.user.id) && !memberResponses.has(interaction.user.id))
+        .map(memberResponse => memberResponse.first().thread)
+        
+        if(threads.length > 0) {
             const threadOptions = threads.map(
                 thread => ({
                     label: thread.name,
