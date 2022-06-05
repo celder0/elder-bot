@@ -12,7 +12,13 @@ async function commandHandler(bot, interaction) {
     if(interaction.options.getSubcommand() === COMMAND_NAME) {
         const channel = bot.channels.cache.get(interaction.channelId);
         const activeThreads = (await channel.threads.fetchActive()).threads;
-        const threads = activeThreads.filter(thread => thread.members.cache.has(bot.user.id) && !thread.members.cache.has(interaction.user.id));
+        const threads = [];
+        for(const thread of activeThreads) {
+            const members = await thread.members.fetch();
+            if(members.has(bot.user.id) && !members.has(interaction.user.id)) {
+                threads.push(thread);
+            }
+        }
         
         if(threads.size > 0) {
             const threadOptions = threads.map(
@@ -38,21 +44,6 @@ async function commandHandler(bot, interaction) {
                 ephemeral: true
             });
         }
-    }
-}
-
-async function getThreadsWithoutBotOrUser(thread, interaction, bot) {
-    try {
-        return thread;
-        const containsBot = await thread.members.fetch(bot.user.id); 
-        // const containsUser = await thread.members.fetch(interaction.user.id);
-        if(containsBot) {
-            return thread;
-        }
-        return undefined;
-    } catch (e) {
-        console.log(e);
-        return undefined;
     }
 }
 
