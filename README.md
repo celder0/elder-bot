@@ -2,6 +2,10 @@
 
 This is a multipurpose discord bot.
 
+## Prerequisites
+
+* npm
+
 ## Starting the bot for development
 
 * Create application on discord https://discord.com/developers/applications
