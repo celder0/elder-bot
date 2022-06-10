@@ -8,6 +8,7 @@ function data(subcommand) {
         option
         .setName('name')
         .setDescription('thread name')
+        .setRequired(true)
     )
 }
 
@@ -26,18 +27,9 @@ async function commandHandler(bot, interaction) {
 
         if(thread.joinable) await thread.join();
         
-        const join = new MessageButton().setCustomId('joinThread').setLabel('Join').setStyle('PRIMARY');
+        const join = new MessageButton().setCustomId(`joinThread:${thread.id}`).setLabel('Join').setStyle('PRIMARY');
         const actions = new MessageActionRow().addComponents(join);
         await interaction.reply({content: `Spoiler thread created: ${threadName}`, components: [actions]});
-        
-        const message = await interaction.fetchReply();
-        const filter = i => i.customId === 'joinThread';
-        const collector = await message.createMessageComponentCollector({filter});
-        collector.on('collect', async i => {
-            if (i.customId === 'joinThread') {
-                thread.members.add(i.user.id);
-            }
-        });
     }
 }
 
