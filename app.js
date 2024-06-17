@@ -1,9 +1,7 @@
 const newrelic = require('newrelic');
-const { prefix } = require("./config.json");
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const { Client, Intents, Collection, MessageButton, MessageActionRow } = require('discord.js');
-const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES,Intents.FLAGS.GUILD_MEMBERS] });
+const { GatewayIntentBits } = require('discord-api-types/v9');
+const { Client } = require('discord.js');
+const bot = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages,GatewayIntentBits.GuildMembers] });
 
 const fs = require("fs");
 
