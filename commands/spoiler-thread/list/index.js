@@ -1,4 +1,4 @@
-const { MessageSelectMenu, MessageActionRow } = require('discord.js');
+const { StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder } = require('discord.js');
 
 const COMMAND_NAME = 'list'
 
@@ -23,17 +23,22 @@ async function commandHandler(bot, interaction) {
         
         if(threads.length > 0) {
             const threadOptions = threads.map(
-                thread => ({
-                    label: thread.name,
-                    description: thread.description,
-                    value: thread.id,
-                })
-            );
-            const selectMenu = new MessageSelectMenu()
+                thread => {
+                const menuOption = new StringSelectMenuOptionBuilder()
+                    .setLabel(thread.name)
+                    .setValue(thread.id)
+
+                if(thread.description) {
+                    menuOption.setDescription(thread.description);
+                }
+                
+                return menuOption;
+            });
+            const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('joinThread')
             .setPlaceholder('Nothing selected')
             .addOptions(threadOptions);
-            const actions = new MessageActionRow().addComponents(selectMenu);
+            const actions = new ActionRowBuilder().addComponents(selectMenu);
             await interaction.reply({
                 content:`Spoiler threads: ${threads.size === 0 ? '\nNo active spoiler threads' : ''}`, 
                 ephemeral: true,

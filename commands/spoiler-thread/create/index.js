@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 
 function data(subcommand) {
     return subcommand
@@ -27,8 +27,8 @@ async function commandHandler(bot, interaction) {
 
         if(thread.joinable) await thread.join();
         
-        const join = new MessageButton().setCustomId(`joinThread:${thread.id}`).setLabel('Join').setStyle('PRIMARY');
-        const actions = new MessageActionRow().addComponents(join);
+        const join = new ButtonBuilder().setCustomId(`joinThread:${thread.id}`).setLabel('Join').setStyle(ButtonStyle.Primary);
+        const actions = new ActionRowBuilder().addComponents(join);
         await interaction.reply({content: `Spoiler thread created: ${threadName}`, components: [actions]});
     }
 }
