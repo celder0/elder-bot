@@ -5,7 +5,7 @@ async function execute(interaction, bot) {
         if (interaction.customId) {
             if (interaction.customId.startsWith('joinThread')) {
                 let threadId; 
-                if(interaction.isSelectMenu()) {
+                if(interaction.isStringSelectMenu()) {
                     threadId = interaction.values[0];    
                 } else {
                     threadId = interaction.customId.split(':')[1];
