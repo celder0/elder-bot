@@ -1,4 +1,4 @@
-const { ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, ButtonStyle, ChannelType, GuildFeature } = require('discord.js');
 
 function data(subcommand) {
     return subcommand
@@ -17,10 +17,10 @@ async function commandHandler(bot, interaction) {
         const threadName = interaction.options.getString('name');
         const channel = bot.channels.cache.get(interaction.channelId);
         
-        const canPrivateThread = channel.guild.features.includes('PRIVATE_THREADS');
+        const canPrivateThread = channel.guild.features.includes(GuildFeature.PrivateThreads);
         const thread = await channel.threads.create({
             name: threadName,
-            type: canPrivateThread ? 'GUILD_PRIVATE_THREAD': undefined,
+            type: canPrivateThread ? ChannelType.PrivateThread: undefined,
             autoArchiveDuration: 1440,
             reason: `Spoiler thread created by ${interaction.member.displayName}`
         });
